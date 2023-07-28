@@ -51,7 +51,7 @@ void co_wait(struct co *co)
   co->status = CO_WAITING;
   int index_cur = co->index;
   int num = setjmp(jump_buffer);
-  if(g_count<100)
+  if(g_count<200)
   {
   if(num==0)
   {
@@ -86,14 +86,14 @@ void entry1(void *arg) {
     printf("%s[%d] ", (const char *)arg, g_count++);
     co_yield();
   }
-  
 }
  int main()
  {
   srand((unsigned)time(NULL));
-  struct co *co1 = co_start("co1", entry1, "a");
-  struct co *co2 = co_start("co2", entry1, "b");
+  struct co *co1 = co_start("co1", entry1, "X");
+  struct co *co2 = co_start("co2", entry1, "Y");
   co_wait(co1);
   co_wait(co2);
+  printf("Done");
   return 0;
  }
